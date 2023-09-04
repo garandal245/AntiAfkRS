@@ -8,14 +8,14 @@ fn get_user_time()-> i32 {
 
         let mut input = String::new();  // Creates a mutable variable "input" as a string
         io::stdin().read_line(&mut input)
-            .expect("Failed to read line"); // Calls io::stdin.readline and assigns it by using a mutable reference to input
+            .expect("Failed to read line");     // Calls io::stdin.readline and assigns it by using a mutable reference to input
                                                 // Reference is essentially a pointer with a guarenteed lifetime and ownership concept
                                                 // See reference test in src\learn\references
 
 
 
         match input.trim().parse::<i32>() {     // Parses the variable "input(string)" to an i32
-            Ok(number) => {                // If ok it assigns it to a newly created variable "number"
+            Ok(number) => {                     // If ok it assigns it to a newly created variable "number"
                 return number;                  // Returns number to the calling function
             }
             Err(_) => {
