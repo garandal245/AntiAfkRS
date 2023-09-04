@@ -6,7 +6,7 @@
 
             println!("Enter max desired AFK time (in seconds)");
 
-            let mut usertime = loop {
+            let usertime = loop {
                 let mut input = String::new();
                 io::stdin()
                     .read_line(&mut input)
