@@ -28,28 +28,45 @@ fn get_user_time()-> i32 {
 }
 
 
+fn compare_cursor_position(timer: &mut i32, usertime: i32, afk: &mut bool){
+
+    loop {
+        let cursor_locationold = autopilot::mouse::location();
+        std::thread::sleep(Duration::from_secs(1));
+        let cursor_locationnew = autopilot::mouse::location();
+        if cursor_locationold == cursor_locationnew {
+            *timer += 1;
+            println!("{}", timer);
+        } else {
+            *timer = 0;
+            println!("{}", timer);
+        }
+        if *timer >= usertime {
+            println!("You are AFK");
+             *afk = true;
+             return;
+        }
+
+    }
+}
+
 fn main() {
     let mut timer = 0;
+    let mut afk = false;
     println!("Enter max desired AFK time (in seconds)");
 
 
     let usertime = get_user_time();
-    loop {
-        let cursor_locationold = autopilot::mouse::location(); // TODO. Move cursor checking and counter incrementing to their own functions
-        std::thread::sleep(Duration::from_secs(1));
-        let cursor_locationnew = autopilot::mouse::location();
-        if cursor_locationold == cursor_locationnew {
-            timer += 1;
-            println!("{}", timer);
-        } else {
+
+    loop{
+        compare_cursor_position(&mut timer, usertime, &mut afk);
+
+
+
+        if afk {
+            println!("you were afk for {} seconds", timer);
             timer = 0;
-            println!("{}", timer);
         }
 
-
-        if timer >= usertime {
-            println!("You are AFK");
-            break;
-        }
     }
 }
