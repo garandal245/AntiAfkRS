@@ -2,7 +2,9 @@ extern crate autopilot;
 use std::{io, time::Duration};
 
 
-fn get_user_time()-> i32 {
+fn get_user_input(prompt: &str)-> i32 {         // The function requires a prompt when called and assigns it to a string variable
+
+    println!("{}", prompt);                     // Prints the prompt that was given
 
     loop {          // Loop until a valid number is provided.
 
@@ -11,8 +13,6 @@ fn get_user_time()-> i32 {
             .expect("Failed to read line");     // Calls io::stdin.readline and assigns it by using a mutable reference to input
                                                 // Reference is essentially a pointer with a guarenteed lifetime and ownership concept
                                                 // See reference test in src\learn\references
-
-
 
         match input.trim().parse::<i32>() {     // Parses the variable "input(string)" to an i32
             Ok(number) => {                     // If ok it assigns it to a newly created variable "number"
@@ -28,7 +28,7 @@ fn get_user_time()-> i32 {
 }
 
 
-fn compare_cursor_position(timer: &mut i32, usertime: i32, afk: &mut bool){
+fn compare_cursor_position(timer: &mut i32, max_afk_time: i32, afk: &mut bool){
 
     loop {
         let cursor_locationold = autopilot::mouse::location();
@@ -41,7 +41,7 @@ fn compare_cursor_position(timer: &mut i32, usertime: i32, afk: &mut bool){
             *timer = 0;
             println!("{}", timer);
         }
-        if *timer >= usertime {
+        if *timer >= max_afk_time {
             println!("You are AFK");
              *afk = true;
              return;
@@ -50,23 +50,35 @@ fn compare_cursor_position(timer: &mut i32, usertime: i32, afk: &mut bool){
     }
 }
 
+
+
 fn main() {
     let mut timer = 0;
     let mut afk = false;
-    println!("Enter max desired AFK time (in seconds)");
 
 
-    let usertime = get_user_time();
+
+    let max_afk_time = get_user_input("Enter the max afk time desired:");
+
+
+    println!("please enter the range of coorditantes to click in");
+    let  xmin = get_user_input("Enter xmin:");
+    let  xmax = get_user_input("Enter xmax:");
+    let  ymin = get_user_input("Enter ymin:");
+    let  ymax = get_user_input("Enter ymax:");
+    println!("Will randomly click between\nX range: {xmin}, {xmax}\nY range: {ymin}, {ymax}");
+
+
 
     loop{
-        compare_cursor_position(&mut timer, usertime, &mut afk);
-
-
+        compare_cursor_position(&mut timer, max_afk_time, &mut afk);
 
         if afk {
             println!("you were afk for {} seconds", timer);
             timer = 0;
         }
+
+
 
     }
 }
