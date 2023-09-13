@@ -1,5 +1,6 @@
 extern crate autopilot;
 use std::{io, time::Duration};
+use rand::Rng;
 
 
 fn get_user_input(prompt: &str)-> i32 {         // The function requires a prompt when called and assigns it to a string variable
@@ -42,7 +43,6 @@ fn compare_cursor_position(timer: &mut i32, max_afk_time: i32, afk: &mut bool){
             println!("{}", timer);
         }
         if *timer >= max_afk_time {
-            println!("You are AFK");
              *afk = true;
              return;
         }
@@ -52,7 +52,7 @@ fn compare_cursor_position(timer: &mut i32, max_afk_time: i32, afk: &mut bool){
 
 
 
-fn main() {
+fn main() -> ! {
     let mut timer = 0;
     let mut afk = false;
 
@@ -73,10 +73,14 @@ fn main() {
     loop{
         compare_cursor_position(&mut timer, max_afk_time, &mut afk);
 
-        if afk {
-            println!("you were afk for {} seconds", timer);
-            timer = 0;
+        if !afk {
+            continue;
         }
+        println!("you were afk for {} seconds, moving mouse", timer);
+        timer = 0;
+        let xrand = rand::thread_rng().gen_range(xmin..=xmax);
+        let yrand = rand::thread_rng().gen_range(ymin..=ymax);
+        autopilot::mouse::smooth_move(autopilot::geometry::Point::new(xrand as f64, yrand as f64), Some(100.0));
 
 
 
