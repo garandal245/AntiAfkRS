@@ -74,14 +74,20 @@ fn main() -> ! {
         compare_cursor_position(&mut timer, max_afk_time, &mut afk);
 
         if !afk {
-            continue;
+            continue;       // "Continue" Skips to the start of the loop if not afk
         }
         println!("you were afk for {} seconds, moving mouse", timer);
         timer = 0;
-        let xrand = rand::thread_rng().gen_range(xmin..=xmax);
-        let yrand = rand::thread_rng().gen_range(ymin..=ymax);
-        autopilot::mouse::smooth_move(autopilot::geometry::Point::new(xrand as f64, yrand as f64), Some(100.0))
-            .expect("error moving mouse");
+
+        let xrand = rand::thread_rng()
+            .gen_range(xmin..=xmax);
+        let yrand = rand::thread_rng()
+            .gen_range(ymin..=ymax);
+
+        autopilot::mouse::smooth_move(autopilot::geometry::Point::new(xrand as f64, yrand as f64), Some(100.0)) // Calls the function smooth_move.
+            .expect("error moving mouse");                                                                      // Inside said function it uses geometry::point::new to create a point using xrand and yrand
+                                                                                                                // "Some" is from std::option::Option::Some and converts 100 to an option type
+
 
 
 
