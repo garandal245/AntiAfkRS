@@ -80,7 +80,8 @@ fn main() -> ! {
         timer = 0;
         let xrand = rand::thread_rng().gen_range(xmin..=xmax);
         let yrand = rand::thread_rng().gen_range(ymin..=ymax);
-        autopilot::mouse::smooth_move(autopilot::geometry::Point::new(xrand as f64, yrand as f64), Some(100.0));
+        autopilot::mouse::smooth_move(autopilot::geometry::Point::new(xrand as f64, yrand as f64), Some(100.0))
+            .expect("error moving mouse");
 
 
 
