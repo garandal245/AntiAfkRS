@@ -68,6 +68,7 @@ fn main() {
     let mut xmax: i32;
     let mut ymin: i32;
     let mut ymax: i32;
+    let rclick: i32;
 
     loop {
         xmin = get_user_input("Enter xmin:");
@@ -89,6 +90,7 @@ fn main() {
         break;
     }
 
+    rclick = get_user_input("do you want to right click 1 for yes and 0 for no");
 
     println!("Will randomly click between\nX range: {xmin}, {xmax}\nY range: {ymin}, {ymax}");
 
@@ -112,9 +114,13 @@ fn main() {
         autopilot::mouse::smooth_move(autopilot::geometry::Point::new(xrand as f64, yrand as f64), Some(0.30)) // Calls the function smooth_move.
             .expect("error moving mouse");                                                                      // Inside said function it uses geometry::point::new to create a point using xrand and yrand
                                                                                                                 // "Some" is from std::option::Option::Some and converts 100 to an option type
-        autopilot::mouse::click(autopilot::mouse::Button::Right, Some(100));
-        std::thread::sleep(Duration::from_millis(300));
-        autopilot::key::tap(&Code(autopilot::key::KeyCode::Escape), &[], 100, 0);
+
+
+        if rclick == 1 {
+            autopilot::mouse::click(autopilot::mouse::Button::Right, Some(100));
+            std::thread::sleep(Duration::from_millis(300));
+            autopilot::key::tap(&Code(autopilot::key::KeyCode::Escape), &[], 100, 0);
+        }
 
 
     }
