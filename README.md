@@ -8,3 +8,5 @@ My first real rust program
 Might be usefull to someone but probably isnt.
 
 compared to my python version i think this was made better but i dont like how the mouse movement works using smoothmove from autopilot crate
+
+only issues that i could find is that it doesnt decect keyboard as of yet which im planning to figure out, and if you dont click into the program manually escape doesnt actually close the context menu
