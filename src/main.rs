@@ -1,5 +1,6 @@
 extern crate autopilot;
 use std::{io, time::Duration};
+use autopilot::key::Code;
 use rand::Rng;
 
 
@@ -52,7 +53,7 @@ fn compare_cursor_position(timer: &mut i32, max_afk_time: i32, afk: &mut bool){
 
 
 
-fn main() -> ! {
+fn main() {
     let mut timer = 0;
     let mut afk = false;
 
@@ -84,11 +85,12 @@ fn main() -> ! {
         let yrand = rand::thread_rng()
             .gen_range(ymin..=ymax);
 
-        autopilot::mouse::smooth_move(autopilot::geometry::Point::new(xrand as f64, yrand as f64), Some(100.0)) // Calls the function smooth_move.
+        autopilot::mouse::smooth_move(autopilot::geometry::Point::new(xrand as f64, yrand as f64), Some(0.30)) // Calls the function smooth_move.
             .expect("error moving mouse");                                                                      // Inside said function it uses geometry::point::new to create a point using xrand and yrand
                                                                                                                 // "Some" is from std::option::Option::Some and converts 100 to an option type
-
-
+        autopilot::mouse::click(autopilot::mouse::Button::Right, Some(100));
+        std::thread::sleep(Duration::from_millis(300));
+        autopilot::key::tap(&Code(autopilot::key::KeyCode::Escape), &[], 100, 0);
 
 
     }
