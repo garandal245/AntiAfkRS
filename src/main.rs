@@ -108,7 +108,7 @@ fn main() {
         let yrand = rand::thread_rng()
             .gen_range(ymin..=ymax);
 
-        autopilot::mouse::smooth_move(autopilot::geometry::Point::new(xrand as f64, yrand as f64), Some(0.30)) // Calls the function smooth_move.
+
         autopilot::mouse::smooth_move(autopilot::geometry::Point::new(xrand as f64, yrand as f64), Some(0.30)) // Calls the function smooth_move.
             .expect("error moving mouse");                                                                      // Inside said function it uses geometry::point::new to create a point using xrand and yrand
                                                                                                                 // "Some" is from std::option::Option::Some and converts 100 to an option type
