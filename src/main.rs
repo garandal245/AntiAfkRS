@@ -33,10 +33,10 @@ fn get_user_input(prompt: &str)-> i32 {         // The function requires a promp
 fn compare_cursor_position(timer: &mut i32, max_afk_time: i32, afk: &mut bool){
 
     loop {
-        let cursor_locationold = autopilot::mouse::location();
+        let cursor_location_old = autopilot::mouse::location();
         std::thread::sleep(Duration::from_secs(1));
-        let cursor_locationnew = autopilot::mouse::location();
-        if cursor_locationold == cursor_locationnew {
+        let cursor_location_new = autopilot::mouse::location();
+        if cursor_location_old == cursor_location_new {
             *timer += 1;
             println!("{}", timer);
         } else {
@@ -62,11 +62,34 @@ fn main() {
     let max_afk_time = get_user_input("Enter the max afk time desired:");
 
 
-    println!("please enter the range of coorditantes to click in");
-    let  xmin = get_user_input("Enter xmin:");
-    let  xmax = get_user_input("Enter xmax:");
-    let  ymin = get_user_input("Enter ymin:");
-    let  ymax = get_user_input("Enter ymax:");
+    println!("please enter the range of coorditantes to right click in");
+
+    let mut xmin: i32;
+    let mut xmax: i32;
+    let mut ymin: i32;
+    let mut ymax: i32;
+
+    loop {
+        xmin = get_user_input("Enter xmin:");
+        xmax = get_user_input("Enter xmax:");
+        if xmin > xmax {
+            println!("minimum cannot be greater than maximum");
+            continue;
+        }
+        break;
+    }
+
+    loop {
+        ymin = get_user_input("Enter ymin:");
+        ymax = get_user_input("Enter ymax:");
+        if ymin > ymax {
+            println!("minimum cannot be greater than maximum");
+            continue;
+        }
+        break;
+    }
+
+
     println!("Will randomly click between\nX range: {xmin}, {xmax}\nY range: {ymin}, {ymax}");
 
 
@@ -85,6 +108,7 @@ fn main() {
         let yrand = rand::thread_rng()
             .gen_range(ymin..=ymax);
 
+        autopilot::mouse::smooth_move(autopilot::geometry::Point::new(xrand as f64, yrand as f64), Some(0.30)) // Calls the function smooth_move.
         autopilot::mouse::smooth_move(autopilot::geometry::Point::new(xrand as f64, yrand as f64), Some(0.30)) // Calls the function smooth_move.
             .expect("error moving mouse");                                                                      // Inside said function it uses geometry::point::new to create a point using xrand and yrand
                                                                                                                 // "Some" is from std::option::Option::Some and converts 100 to an option type
